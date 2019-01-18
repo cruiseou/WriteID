@@ -1,0 +1,12 @@
+1:串口波特率 115200 8位数据位 1位停止位 无校验 无硬件流控制
+2:写ID指令    AT+ID=11223344\r\n
+  写成功回复  "成功写入ID号为:11223344\r\n"
+
+3:读SIGFOX模块DeviceID和PAC指令  AT+READ\r\n
+  回复 
+  SIGFOX_ID=0045786B\r\n
+  SIGFOX_PAC=1122334455667788\r\n
+
+4:保存为csv文件，三个列分别为 ID      DeviceID     PAC  ,其中ID是8位数字   DeviceID是8位数字和字母  PAC为16位数字和字母
+
+5:注意，平时串口会有一些其它的数据输出
