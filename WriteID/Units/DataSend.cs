@@ -316,7 +316,7 @@ namespace WriteID.Units
         public int GetIndexOf(byte[] b, byte[] bb)
 
         {
-
+            int bbcount = 0;
             if (b == null || bb == null || b.Length == 0 || bb.Length == 0 || b.Length < bb.Length)
                 return -1;
             int i, j;
@@ -335,8 +335,9 @@ namespace WriteID.Units
                             break;
 
                     }
-                    if (j == bb.Length)
 
+                    if (j == bb.Length)
+                        bbcount++;
                         return i;
                 }
             }
