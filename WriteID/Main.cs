@@ -19,16 +19,16 @@ namespace WriteID
     {
         public Main()
         {
-            string dateold = "2019-01-17";
-            DateTime dateoldtime = Convert.ToDateTime(dateold);
-            DateTime datenew = DateTime.Now;
-            TimeSpan td = datenew.Subtract(dateoldtime).Duration();
-            int cha = td.Days;
-            if (cha > 3)
-            {
-                this.Close();
-                this.Dispose();
-            }
+            //string dateold = "2019-01-17";
+            //DateTime dateoldtime = Convert.ToDateTime(dateold);
+            //DateTime datenew = DateTime.Now;
+            //TimeSpan td = datenew.Subtract(dateoldtime).Duration();
+            //int cha = td.Days;
+            //if (cha > 3)
+            //{
+            //    this.Close();
+            //    this.Dispose();
+            //}
             InitializeComponent();
 
             

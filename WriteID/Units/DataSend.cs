@@ -6,7 +6,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using WriteID.Lib;
-    using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using System.Threading;
 /*---------------作者：Maximus Ye----------------------*/
 /*---------------时间：2013年8月16日---------------*/
@@ -108,7 +108,7 @@ namespace WriteID.Units
             Mytimer.Stop();
             issuccessreceive = false;
             isread = false;
-           // this.Id = string.Empty;
+            // this.Id = string.Empty;
             MessageBox.Show("数据发送超时,请重新写入", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             this.Invoke(new MethodInvoker(delegate
             {
@@ -123,7 +123,7 @@ namespace WriteID.Units
             //TimeCount++;
         }
 
-      
+
 
 
 
@@ -172,7 +172,7 @@ namespace WriteID.Units
             {
                 MessageBox.Show(exception.Message);
             }
-           
+
         }
 
 
@@ -204,60 +204,74 @@ namespace WriteID.Units
 
         public void IsSuccessWriteID(byte[] data)
         {
-        
+
             string result = Encoding.GetEncoding("GB2312").GetString(data);
 
             if (!string.IsNullOrEmpty(Id))
             {
-              
+
                 if (result.Contains(id) && result.Contains("成功"))
                 {
                     Mytimer.Stop();
                     ReadSIGFOX();
-                    
+
 
                 }
 
             }
 
-           if (result.Contains("SIGFOX_ID"))
+            byte[] SIGFOX_ID = new byte[10] { 83, 73, 71, 70, 79, 88, 95, 73, 68, 61 };
+            int SIGFOX_IDCount= GetIndexOf(data, SIGFOX_ID);
+
+            if (SIGFOX_IDCount > 0)
             {
+
                 if (isread)
                 {
                     Mytimer.Stop();
                     SigfoxId = result.Split('=')[1].Split('\\')[0].Substring(0, 8); ;
                 }
-             
-              //  Issuccessreceive = true;
-               // this.Invoke(new MethodInvoker(delegate { txt_DeviceID.Text = SigfoxId; }));
-
-
             }
-          if (result.Contains("SIGFOX_PAC"))
+
+            //if (result.Contains("SIGFOX_ID"))
+            //{
+               
+            //    if (isread)
+            //    {
+            //        Mytimer.Stop();
+            //        SigfoxId = result.Split('=')[1].Split('\\')[0].Substring(0, 8); ;
+            //    }
+
+            //    //  Issuccessreceive = true;
+            //    // this.Invoke(new MethodInvoker(delegate { txt_DeviceID.Text = SigfoxId; }));
+
+
+            //}
+            if (result.Contains("SIGFOX_PAC"))
             {
                 if (isread)
                 {
                     Mytimer.Stop();
                     SigfoxPac = result.Split('=')[1].Split('\\')[0].Substring(0, 16); ;
                 }
-              
-              //  Issuccessreceive = true;
-               // this.Invoke(new MethodInvoker(delegate { txt_PAC.Text = SigfoxPac; }));
+
+                //  Issuccessreceive = true;
+                // this.Invoke(new MethodInvoker(delegate { txt_PAC.Text = SigfoxPac; }));
 
             }
 
-           
+
             //else
-                //{
-                //    this.Invoke(new MethodInvoker(delegate
-                //    {
+            //{
+            //    this.Invoke(new MethodInvoker(delegate
+            //    {
 
-                //        btn_write.Enabled = true;
+            //        btn_write.Enabled = true;
 
-                //    }));
-                //}
+            //    }));
+            //}
 
-                if (!string.IsNullOrEmpty(id)&&!string.IsNullOrEmpty(sigfox_id)&&!string.IsNullOrEmpty(sigfox_pac))
+            if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(sigfox_id) && !string.IsNullOrEmpty(sigfox_pac))
             {
                 EventDataSave(id, sigfox_id, sigfox_pac);
 
@@ -267,9 +281,9 @@ namespace WriteID.Units
 
                 this.Invoke(new MethodInvoker(delegate
                 {
-                   
-                        btn_write.Enabled = true;
-                    
+
+                    btn_write.Enabled = true;
+
                 }));
                 isread = false;
 
@@ -296,6 +310,38 @@ namespace WriteID.Units
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             Isadd = checkBox1.Checked;
+        }
+
+
+        public int GetIndexOf(byte[] b, byte[] bb)
+
+        {
+
+            if (b == null || bb == null || b.Length == 0 || bb.Length == 0 || b.Length < bb.Length)
+                return -1;
+            int i, j;
+            for (i = 0; i < b.Length - bb.Length + 1; i++)
+
+            {
+                if (b[i] == bb[0])
+
+                {
+                    for (j = 1; j < bb.Length; j++)
+
+                    {
+
+                        if (b[i + j] != bb[j])
+
+                            break;
+
+                    }
+                    if (j == bb.Length)
+
+                        return i;
+                }
+            }
+            return -1;
+
         }
     }
 }
